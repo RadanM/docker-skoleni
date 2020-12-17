@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+    web:
+        build: .docker
+        volumes:
+            - ./:/var/www/html
+            - ./.docker/apache/sites-enabled:/etc/apache2/sites-enabled
+        ports:
+            - 8000:80
+
+    database:
+        image: mariadb:10.1
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: local
+            MYSQL_PASSWORD: local
+            MYSQL_DATABASE: local
+
+    client:
+        image: phpmyadmin:latest
+        environment:
+            PMA_HOST: database
+        ports:
+            - 8001:80
